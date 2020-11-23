@@ -1,0 +1,7 @@
+{
+  "name": "smpiHomeApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
