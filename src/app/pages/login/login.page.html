@@ -1,7 +1,23 @@
-<ion-header translucent>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      <span translate="pages.login.title"></span>
+    </ion-title>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title size="large">
+        <span translate="pages.login.title"></span>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
   <div id="container" *ngIf="loginForm">
     <form id="login-form" [formGroup]="loginForm" (ngSubmit)="login()" *ngIf="loginForm">
 

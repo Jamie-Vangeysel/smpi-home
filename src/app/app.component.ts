@@ -5,6 +5,7 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {TranslateService} from '@ngx-translate/core';
 import {Config, Platform} from '@ionic/angular';
 import {environment} from '../environments/environment';
+import { LocationService } from './core/location.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private translate: TranslateService,
-    private config: Config
+    private config: Config,
+    private locationService: LocationService
   ) {
     this.initializeApp();
   }

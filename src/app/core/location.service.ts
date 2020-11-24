@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
   BackgroundGeolocation,
-  BackgroundGeolocationAccuracy,
   BackgroundGeolocationConfig,
   BackgroundGeolocationEvents,
   BackgroundGeolocationResponse
@@ -21,7 +20,7 @@ export class LocationService {
 
   async start() {
     const config: BackgroundGeolocationConfig = {
-      desiredAccuracy: BackgroundGeolocationAccuracy.MEDIUM,
+      desiredAccuracy: 10,
       stationaryRadius: 50,
       distanceFilter: 50,
       debug: false, //  enable this hear sounds for background-geolocation life-cycle.
