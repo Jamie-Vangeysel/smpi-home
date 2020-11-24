@@ -1,0 +1,32 @@
+<ion-header translucent>
+</ion-header>
+
+<ion-content fullscreen>
+  <div id="container" *ngIf="loginForm">
+    <form id="login-form" [formGroup]="loginForm" (ngSubmit)="login()" *ngIf="loginForm">
+
+      <ion-list lines="full" class="ion-no-margin ion-no-padding">
+        <ion-item>
+          <div tabindex="0"></div>
+          <ion-label position="stacked">
+            {{ 'form.fields.username' | translate }}
+            <ion-text color="danger">*</ion-text>
+          </ion-label>
+          <ion-input type="text" required formControlName="username"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <div class="ion-padding">
+        <ion-button expand="block" type="submit" [disabled]="!loginForm.valid" class="ion-no-margin">
+          <span translate="form.actions.login"></span>
+        </ion-button>
+      </div>
+
+      <p>
+        <ion-note>
+          <span translate="version"></span>{{ appVersion }}
+        </ion-note>
+      </p>
+    </form>
+  </div>
+</ion-content>

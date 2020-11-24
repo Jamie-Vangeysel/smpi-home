@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import {SplashScreen} from '@ionic-native/splash-screen/ngx';
+import {StatusBar} from '@ionic-native/status-bar/ngx';
+import {TranslateService} from '@ngx-translate/core';
+import {Config, Platform} from '@ionic/angular';
+import {environment} from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -10,45 +12,12 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  public selectedIndex = 0;
-  public appPages = [
-    {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
-    },
-    {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane'
-    },
-    {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart'
-    },
-    {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
-    }
-  ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private translate: TranslateService,
+    private config: Config
   ) {
     this.initializeApp();
   }
@@ -58,12 +27,30 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+
+    this.initTranslate();
   }
 
   ngOnInit() {
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+  }
+
+
+  initTranslate() {
+    // Set the default language for translation strings, and the current language.
+    this.translate.setDefaultLang(environment.default_language);
+    const browserLang = this.translate.getBrowserLang();
+
+    // allowed languages
+    this.translate.addLangs(environment.supported_languages);
+
+    if (browserLang && environment.supported_languages.some(e => e === browserLang)) {
+      this.translate.use(browserLang);
+    } else {
+      this.translate.use(environment.default_language);
     }
+
+    this.translate.get(['backButtonText']).subscribe(values => {
+      this.config.set('backButtonText', values.backButtonText);
+    });
   }
 }
