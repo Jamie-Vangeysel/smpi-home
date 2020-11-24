@@ -1,10 +1,12 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   BackgroundGeolocation,
+  BackgroundGeolocationAccuracy,
   BackgroundGeolocationConfig,
   BackgroundGeolocationEvents,
   BackgroundGeolocationResponse
 } from '@ionic-native/background-geolocation/ngx';
+import { LocationApiService } from './api/location.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,23 +14,31 @@ import {
 export class LocationService {
 
   constructor(
-    private backgroundGeolocation: BackgroundGeolocation
+    private backgroundGeolocation: BackgroundGeolocation,
+    private locationApiService: LocationApiService
   ) {
   }
 
   async start() {
     const config: BackgroundGeolocationConfig = {
-      desiredAccuracy: 10,
-      stationaryRadius: 20,
-      distanceFilter: 30,
+      desiredAccuracy: BackgroundGeolocationAccuracy.MEDIUM,
+      stationaryRadius: 50,
+      distanceFilter: 50,
       debug: false, //  enable this hear sounds for background-geolocation life-cycle.
       stopOnTerminate: false, // enable this to clear background location settings when the app terminates
+      activityType: 'OtherNavigation',
+      activitiesInterval: 30000
     };
 
     this.backgroundGeolocation.configure(config)
       .then(() => {
         this.backgroundGeolocation.on(BackgroundGeolocationEvents.location).subscribe((location: BackgroundGeolocationResponse) => {
           console.log(location);
+
+          const username = window.localStorage.getItem('smpiHome.username');
+          this.locationApiService.post(location, username).subscribe(() => {
+            console.log('location has been posted!');
+          });
 
           // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
           // and the background-task may be completed.  You must do this regardless if your operations are successful or not.
