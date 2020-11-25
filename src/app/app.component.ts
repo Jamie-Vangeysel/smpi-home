@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import {StatusBar} from '@ionic-native/status-bar/ngx';
-import {TranslateService} from '@ngx-translate/core';
-import {Config, Platform} from '@ionic/angular';
-import {environment} from '../environments/environment';
+import { Plugins, StatusBarStyle } from '@capacitor/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Config, Platform } from '@ionic/angular';
+import { environment } from '../environments/environment';
 import { LocationService } from './core/location.service';
 
 @Component({
@@ -15,8 +14,6 @@ import { LocationService } from './core/location.service';
 export class AppComponent implements OnInit {
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
     private translate: TranslateService,
     private config: Config,
     private locationService: LocationService
@@ -25,17 +22,20 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
+    const { SplashScreen, StatusBar } = Plugins;
+    this.platform.ready().then(async () => {
+      if (this.platform.is('hybrid')) {
+        await StatusBar.setStyle({ style: StatusBarStyle.Light });
+        await SplashScreen.hide();
+      }
 
+      this.locationService.start();
+    });
     this.initTranslate();
   }
 
   ngOnInit() {
   }
-
 
   initTranslate() {
     // Set the default language for translation strings, and the current language.

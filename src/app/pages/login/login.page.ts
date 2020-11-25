@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AlertController, LoadingController} from '@ionic/angular';
-import {TranslateService} from '@ngx-translate/core';
-import {Router} from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ import {Router} from '@angular/router';
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
   loading: HTMLIonLoadingElement;
-  appVersion: string = '1.0.0';
+  appVersion = '1.0.0';
 
   constructor(
     private fb: FormBuilder,
@@ -30,6 +30,13 @@ export class LoginPage implements OnInit {
       username: ['', [Validators.required, Validators.email]]
     });
     this.ref.markForCheck();
+  }
+
+  async ionViewWillEnter() {
+    const username = window.localStorage.getItem('smpiHome.username');
+    if (username && username.trim().length > 3) {
+      this.router.navigate(['/tabs']);
+    }
   }
 
   login() {

@@ -3,6 +3,9 @@
     "login": {
       "title": "Inloggen",
       "invalid-form-error": "Het opgegeven e-mail adres is niet correct, gelieve uw gegevens te corrigeren en opnieuw te proberen!"
+    },
+    "tabs": {
+      "title": "Home"
     }
   },
   "form": {

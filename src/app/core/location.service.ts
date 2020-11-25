@@ -26,6 +26,8 @@ export class LocationService {
       debug: false, //  enable this hear sounds for background-geolocation life-cycle.
       stopOnTerminate: false, // enable this to clear background location settings when the app terminates
       activityType: 'OtherNavigation',
+      saveBatteryOnBackground: true,
+      startOnBoot: true,
       activitiesInterval: 30000
     };
 
@@ -37,6 +39,8 @@ export class LocationService {
           const username = window.localStorage.getItem('smpiHome.username');
           this.locationApiService.post(location, username).subscribe(() => {
             console.log('location has been posted!');
+          }, err => {
+            console.log('error posting location');
           });
 
           // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
